@@ -1,0 +1,48 @@
+:root {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+
+    color: #0f0f0f;
+    background-color: #f6f6f6;
+
+    --color-HextechBlack: rgb(1, 10, 19);
+    --color-Gold1: rgb(240, 230, 210);
+    --color-Gold2: rgb(219, 203, 156);
+    --color-Gold3: rgb(200, 170, 110);
+    --color-Gold4: rgb(200, 155, 60);
+    --color-Gold5: rgb(120, 90, 40);
+    --color-Gold6: rgb(70, 55, 20);
+    --color-Gold7: rgb(50, 40, 30);
+    --color-GreyCool: rgb(30, 40, 45);
+    --color-Grey1: rgb(160, 155, 140);
+    --color-Grey15: rgb(91, 90, 86);
+    --color-Grey2: rgb(60, 60, 65);
+    --color-Grey3: rgb(30, 35, 40);
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden
+}
+
+.container {
+    margin: 0;
+    padding-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+#lol-close-btn {
+    background-image: image("assets/ui/close.png");
+}
