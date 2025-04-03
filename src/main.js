@@ -1,25 +1,22 @@
 const { invoke } = window.__TAURI__.core;
-import { exit } from '@tauri-apps/api/process';
-
-// let greetInputEl;
-// let greetMsgEl;
-
-// async function greet() {
-//   // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-//   greetMsgEl.textContent = await invoke("greet", { name: greetInputEl.value });
-// }
+const { getCurrentWindow } = window.__TAURI__.window;
 
 let closeBtn;
+let hideBtn;
 
-async function close()
-{
-  await exit(0);
-}
+const appWindow = getCurrentWindow();
 
 window.addEventListener("DOMContentLoaded", () => {
   closeBtn = document.querySelector("#close-btn");
   closeBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    close();
+    appWindow.close();
+  });
+
+
+  hideBtn = document.querySelector("#hide-btn");
+  hideBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    appWindow.minimize();
   });
 });

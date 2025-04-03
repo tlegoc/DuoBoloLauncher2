@@ -1,22 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="styles.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="styles.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Tauri App</title>
     <script type="module" src="/main.js" defer></script>
-  </head>
+    <script type="module" src="/login.js" defer></script>
+</head>
 
-  <body>
-    <main class="container">
-      <video loop autoplay style="position: fixed; left: 0; bottom: 0; min-height: 100%">
-        <source src="https://raw.communitydragon.org/pbe/plugins/rcp-fe-lol-static-assets/global/default/videos/video-splash-ss19-c.webm" type="video/webm">
-      </video>
-      <div style="position: fixed; right: 0; top: 0; min-height: 100%; min-width: 225px; background-color: var(--color-HextechBlack)">
-      </div>
-      <button id="close-btn" class="lol-close-btn" style="position: fixed; top: 10px; right: 15px; min-width: 15px; min-height: 15px">
-      </button>
-    </main>
-  </body>
+<body>
+<main class="container">
+    <video data-tauri-drag-region loop autoplay style="position: fixed; left: 0; bottom: 0; min-height: 100%">
+        <source src="/assets/video-splash-ss19-c.webm" type="video/webm">
+    </video>
+    <div  data-tauri-drag-region style="position: fixed; right: 0; top: 0; min-height: 100%; min-width: 225px; background-color: var(--color-HextechBlack)">
+        <form id="login-form" class="lol-login-form" style="margin-top: 100px">
+            <label style="left: 0; font-family: Beaufort, sans-serif; font-size: 24px; color: var(--color-Gold1)">SIGN IN</label>
+            <label for="username" style="left: 0">Username</label>
+            <input type="text" id="username" name="username"/>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"/>
+            <button class="lol-btn" style="width: 100%; margin-top: 300px" type="submit">SIGN IN</button>
+            <button class="lol-btn" style="width: 100%; margin-top: 10px" type="button">CREATE ACCOUNT</button>
+        </form>
+    </div>
+    <button id="close-btn" class="lol-icon-btn lol-close-btn" style="position: fixed; top: 5px; right: 10px;"></button>
+    <button id="hide-btn" class="lol-icon-btn lol-hide-btn" style="position: fixed; top: 5px; right: 42px;">
+    </button>
+
+    <!-- 3px top line -->
+    <div style="position: fixed; top: 0; left: 0; right: 0; height: 2px; background-color: var(--color-Gold5);"></div>
+</main>
+</body>
 </html>
