@@ -46,4 +46,4 @@ jobs:
           choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
 
       - name: Build Tauri app
-        run: cargo tauri build
+        run: cargo tauri build --no-bundle
