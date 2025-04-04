@@ -14,8 +14,9 @@
     -khtml-user-select: none; /* Konqueror HTML */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                     supported by Chrome and Opera */
 
     font-family: Spiegel, sans-serif;
     font-size: 16px;
@@ -101,6 +102,7 @@ html, body {
     padding: 20px;
     display: flex;
     flex-direction: column;
+    flex: 1;
     align-items: start;
     overflow: hidden;
 }
@@ -133,6 +135,14 @@ html, body {
     border-image: linear-gradient(to bottom, var(--color-Gold3), var(--color-Gold5)) 1;
 }
 
+.lol-login-form input:disabled {
+    outline: none;
+    background-color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--color-Gold6);
+}
+
 .lol-login-form input:focus {
     outline: none;
     background-color: var(--color-Grey3);
@@ -152,19 +162,23 @@ html, body {
     border-width: 2px;
     border-style: solid;
     border-image: linear-gradient(to bottom, var(--color-Gold3), var(--color-Gold5)) 1;
+    border-color: white;
 }
 
 @keyframes lol-btn-highlight {
     0% {
         box-shadow: 0 0 10px var(--color-Gold1);
+        text-shadow: 0 0 10px var(--color-Gold1);
     }
     100% {
         box-shadow: 0 0 0 var(--color-Gold1);
+        text-shadow: 0 0 0 var(--color-Gold1);
     }
 }
 
 .lol-btn:hover {
     animation: lol-btn-highlight 1s;
+    color: var(--color-Gold1);
     background: linear-gradient(to bottom, var(--color-Grey3), var(--color-Gold7));
     border-image: linear-gradient(to bottom, var(--color-Gold1), var(--color-Gold4)) 1;
 }
@@ -173,4 +187,100 @@ html, body {
     background: var(--color-Grey3);
     color: var(--color-Grey15);
     border-image: linear-gradient(to bottom, var(--color-Gold6), var(--color-Gold5)) 1;
+}
+
+.lol-btn:disabled {
+    animation: none;
+    background: var(--color-GreyCool);
+    color: var(--color-Grey15);
+    border-width: 2px;
+    border-style: solid;
+    border-image: none;
+    border-color: var(--color-Grey15);
+}
+
+#exit-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#exit-prompt {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--color-HextechBlack);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    z-index: 1000;
+    border: 2px solid var(--color-Gold6);
+}
+
+.lol-play-container {
+    background-image: url("assets/ui/play_button/play-button-frame-default.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 24px;
+    display: flex;
+}
+
+.lol-play-btn {
+    position: relative;
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 146px;
+    height: 58px;
+    padding: 0;
+    background-color: transparent;
+    margin-left: 26px;
+}
+
+.lol-play-btn * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.lol-play-btn span {
+    font-family: Beaufort, serif;
+    color: var(--color-Gold1);
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lol-play-icon {
+    position: absolute;
+    height: 54px;
+    left: -7px;
+}
+
+.lol-content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 81px;
+    left: 0;
+    right: 225px;
+    bottom: 0;
+    position: absolute;
+}
+
+#exit-cancel-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }

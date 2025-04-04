@@ -2,40 +2,37 @@
 mod auth;
 mod endpoints;
 
-use aws_config::{Region, SdkConfig};
-use aws_sdk_cognitoidentityprovider::Client;
 use std::env;
 use tauri::Manager;
 use tokio::sync::Mutex;
-use aws_config::BehaviorVersion;
-use aws_config::meta::region::RegionProviderChain;
 
-#[derive(Default)]
-pub struct AppData {
-    aws_sdk_config: Option<SdkConfig>,
-    cognito_client: Option<Client>,
+#[derive(Default, Debug)]
+pub struct AuthData {
+    pub logged_in: bool,
+    pub id_token: String,
+    pub access_token: String,
+    pub refresh_token: String,
 }
 
-pub async fn run() {
+impl AuthData {
+    pub fn new() -> Self {
+        AuthData {
+            logged_in: false,
+            id_token: String::new(),
+            access_token: String::new(),
+            refresh_token: String::new(),
+        }
+    }
+}
 
-    let region_provider = RegionProviderChain::first_try(Region::new("us-east-1"));
-    let config = aws_config::defaults(BehaviorVersion::latest())
-        .region(region_provider)
-        .load()
-        .await;
-
+pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .setup(|app| {
-            let cognito_client = Client::new(&config);
-
-            app.manage(Mutex::new(AppData {
-                aws_sdk_config: Some(config),
-                cognito_client: Some(cognito_client),
-            }));
+            app.manage(Mutex::new(AuthData::new()));
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![auth::login])
+        .invoke_handler(tauri::generate_handler![auth::login, auth::create_account, auth::logout])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
