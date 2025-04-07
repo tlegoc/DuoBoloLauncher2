@@ -74,6 +74,8 @@ export class PlayBtn {
     }
 
     disable(value) {
+        if (this.disabled === value) return;
+        
         this.disabled = value;
         this.btn.disabled = value;
         if (this.disabled) {

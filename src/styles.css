@@ -285,3 +285,45 @@ html, body {
     top: 10px;
     right: 10px;
 }
+
+.lol-top-btn {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 25px;
+    border: none;
+    width: 50px;
+    overflow: visible;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.lol-top-btn:hover {
+    /*opacity: 0.5;*/
+}
+
+@keyframes inner-glow {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.lol-top-btn:hover:before {
+    height: 100%;
+    content: "";
+    background:  radial-gradient(circle, var(--color-Gold1) 0%, transparent 40%);
+    animation: inner-glow 0.5s forwards;
+    z-index: -1;
+}
+
+.lol-shop-btn {
+    background-image: url("assets/ui/nav-icon-store.svg");
+}
+
+.lol-inventory-btn {
+    background-image: url("assets/ui/nav-icon-collections.svg");
+}

@@ -17,7 +17,6 @@
 
     <!-- sidebar -->
     <div data-tauri-drag-region style="display: flex; position: fixed; right: 0; top: 0; min-height: 100%; min-width: 225px; background-color: var(--color-HextechBlack)">
-        <div style="display: flex; height: calc(81px - 10px * 2); width: calc(100% - 10px * 2); padding: 10px;"></div>
     </div>
 
     <div class="lol-content-container" id="play-container">
@@ -25,7 +24,7 @@
     </div>
 
     <!-- top bar -->
-    <div data-tauri-drag-region style="position: fixed; top: 0; left: 0; right: 0; height: 81px; border-bottom: 1px solid var(--color-Grey2);">
+    <div data-tauri-drag-region style="display: flex; flex-direction: row-reverse; position: fixed; top: 0; left: 0; right: 0; height: 81px; border-bottom: 1px solid var(--color-Grey2);">
 
         <div class="lol-play-container">
             <video autoplay muted class="lol-play-icon" onended="document.querySelector('#lol-play-icon-idle').hidden = false; document.querySelector('#lol-play-icon-idle').play(); this.hidden = true;">
@@ -54,6 +53,10 @@
                 <span>PLAY</span>
             </button>
         </div>
+        <div style="display: flex; width: 225px"></div>
+
+        <button class="lol-top-btn lol-shop-btn"></button>
+        <button class="lol-top-btn lol-inventory-btn"></button>
     </div>
     <!-- 3px top line -->
     <button id="exit-btn" class="lol-icon-btn lol-close-btn" style="position: fixed; top: 5px; right: 10px;"></button>
