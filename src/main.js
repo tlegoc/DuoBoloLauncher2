@@ -1,4 +1,5 @@
 const {invoke} = window.__TAURI__.core;
+const WebSocket = window.__TAURI__.websocket;
 const {getCurrentWindow} = window.__TAURI__.window;
 import {PlayBtn} from "./playBtn.js";
 
@@ -10,6 +11,8 @@ let playBtn;
 let playBtnEl;
 
 const appWindow = getCurrentWindow();
+
+let ws;
 
 window.addEventListener("DOMContentLoaded", () => {
     exitBtn = document.querySelector("#exit-btn");
@@ -58,6 +61,12 @@ window.addEventListener("DOMContentLoaded", () => {
     playTest.addEventListener("click", async (e) => {
         e.preventDefault();
 
-        playBtn.disable(false);
+        // const url = await invoke("get_matchmaking_ws_url");
+        //
+        // ws = await WebSocket.connect(url);
+        //
+        // ws.addListener((msg) => {
+        //     console.log('Received Message:', msg);
+        // });
     });
 });

@@ -56,8 +56,6 @@ pub async fn login(
                     auth_data.id_token = authentication_result.id_token().unwrap_or_default().to_string();
                     auth_data.refresh_token = authentication_result.refresh_token().unwrap_or_default().to_string();
 
-                    println!("{}", auth_data.id_token);
-
                     return Ok("Successfully logged in".to_string());
                 }
             }
@@ -135,3 +133,4 @@ pub async fn logout(
 
     Ok("Logged out successfully".to_string())
 }
+
