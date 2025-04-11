@@ -2,7 +2,6 @@ use crate::endpoints::{COGNITO_CLIENTID, REGION};
 
 use std::collections::HashMap;
 use tauri::State;
-use tokio::sync::Mutex;
 
 use aws_config::meta::region::RegionProviderChain;
 use aws_config::BehaviorVersion;
@@ -13,6 +12,7 @@ use aws_sdk_cognitoidentityprovider::types::{
     AttributeType, AuthFlowType,
 };
 use aws_sdk_cognitoidentityprovider::Client;
+use tokio::sync::Mutex;
 use crate::AuthData;
 
 #[tauri::command]
@@ -51,6 +51,7 @@ pub async fn login(
             if let Some(authentication_result) = response.authentication_result() {
                 if let Some(access_token) = authentication_result.access_token() {
                     let mut auth_data = state.lock().await;
+
                     auth_data.logged_in = true;
                     auth_data.access_token = access_token.to_string();
                     auth_data.id_token = authentication_result.id_token().unwrap_or_default().to_string();
@@ -123,9 +124,10 @@ pub async fn create_account(
 
 #[tauri::command]
 pub async fn logout(
-    state: State<'_, Mutex<AuthData>>,
+    state: State<'_, Mutex<AuthData>>
 ) -> Result<String, String> {
     let mut auth_data = state.lock().await;
+
     auth_data.logged_in = false;
     auth_data.access_token = "".to_string();
     auth_data.id_token = "".to_string();

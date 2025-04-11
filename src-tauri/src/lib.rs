@@ -4,12 +4,8 @@ mod endpoints;
 mod matchmaking;
 
 use std::env;
-use std::thread::Thread;
 use tauri::Manager;
-use std::net::TcpStream;
 use tokio::sync::Mutex;
-use tungstenite::stream::MaybeTlsStream;
-use tungstenite::WebSocket;
 
 #[derive(Default, Debug)]
 pub struct AuthData {
@@ -19,23 +15,17 @@ pub struct AuthData {
     pub refresh_token: String,
 }
 
-impl AuthData {
-    pub fn new() -> Self {
-        AuthData {
-            logged_in: false,
-            id_token: String::new(),
-            access_token: String::new(),
-            refresh_token: String::new(),
-        }
-    }
-}
-
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_websocket::init())
         .setup(|app| {
-            app.manage(Mutex::new(AuthData::new()));
+            app.manage(Mutex::new(AuthData {
+                logged_in: false,
+                id_token: "".to_string(),
+                access_token: "".to_string(),
+                refresh_token: "".to_string(),
+            }));
 
             Ok(())
         })
@@ -43,6 +33,7 @@ pub fn run() {
             auth::login,
             auth::create_account,
             auth::logout,
+            matchmaking::get_matchmaking_url,
             matchmaking::start_matchmaking
         ])
         .run(tauri::generate_context!())

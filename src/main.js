@@ -1,5 +1,6 @@
 const {invoke} = window.__TAURI__.core;
-const WebSocket = window.__TAURI__.websocket;
+// const WebSocket = window.__TAURI__.websocket;
+const { listen } = window.__TAURI__.event;
 const {getCurrentWindow} = window.__TAURI__.window;
 import {PlayBtn} from "./playBtn.js";
 
@@ -9,6 +10,8 @@ let exitLogoutBtn;
 let exitQuitBtn;
 let playBtn;
 let playBtnEl;
+let ipDisplayElDebug;
+let matchmakingListener;
 
 const appWindow = getCurrentWindow();
 
@@ -19,6 +22,7 @@ window.addEventListener("DOMContentLoaded", () => {
     exitContainer = document.querySelector("#exit-container");
     exitLogoutBtn = document.querySelector("#exit-disconnect-btn");
     exitQuitBtn = document.querySelector("#exit-quit-btn");
+    ipDisplayElDebug = document.querySelector("#ip-display");
 
     exitBtn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -61,12 +65,52 @@ window.addEventListener("DOMContentLoaded", () => {
     playTest.addEventListener("click", async (e) => {
         e.preventDefault();
 
-        // const url = await invoke("get_matchmaking_ws_url");
+        invoke("start_matchmaking");
+
+        // console.log("Starting mm");
+        //
+        // const url = await invoke("get_matchmaking_url");
+        //
+        // console.log("MM URL: ", url);
+        //
+        // ipDisplayElDebug.innerText = "Searching...";
         //
         // ws = await WebSocket.connect(url);
         //
         // ws.addListener((msg) => {
-        //     console.log('Received Message:', msg);
+        //     console.log("Received message: ", msg);
+        //
+        //     // if connection closed
+        //     try {
+        //         const data = JSON.parse(msg.data);
+        //
+        //         console.log(data);
+        //
+        //         if (data.status === "found") {
+        //             matchFound(data.ip, data.port);
+        //         }
+        //
+        //     } catch (e) {
+        //         console.log("Error while processing matchmaking message: ", e);
+        //     }
+        //
         // });
     });
+
+    matchmakingListener = listen('matchmaking_message', (event) => {
+        console.log(event);
+    });
 });
+
+window.addEventListener("beforeunload", (event) => {
+    matchmakingListener();
+});
+
+function matchFound(ip, port) {
+    console.log("Displaying ip");
+    ipDisplayElDebug.innerText = ip + ":" + port;
+}
+
+function matchmakingCanceledByServer(data) {
+    console.log(data);
+}
