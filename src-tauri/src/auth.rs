@@ -7,13 +7,11 @@ use aws_config::meta::region::RegionProviderChain;
 use aws_config::BehaviorVersion;
 use aws_config::Region;
 
+use crate::AuthData;
 use aws_sdk_cognitoidentityprovider::error::ProvideErrorMetadata;
-use aws_sdk_cognitoidentityprovider::types::{
-    AttributeType, AuthFlowType,
-};
+use aws_sdk_cognitoidentityprovider::types::{AttributeType, AuthFlowType};
 use aws_sdk_cognitoidentityprovider::Client;
 use tokio::sync::Mutex;
-use crate::AuthData;
 
 #[tauri::command]
 pub async fn login(
@@ -54,8 +52,14 @@ pub async fn login(
 
                     auth_data.logged_in = true;
                     auth_data.access_token = access_token.to_string();
-                    auth_data.id_token = authentication_result.id_token().unwrap_or_default().to_string();
-                    auth_data.refresh_token = authentication_result.refresh_token().unwrap_or_default().to_string();
+                    auth_data.id_token = authentication_result
+                        .id_token()
+                        .unwrap_or_default()
+                        .to_string();
+                    auth_data.refresh_token = authentication_result
+                        .refresh_token()
+                        .unwrap_or_default()
+                        .to_string();
 
                     return Ok("Successfully logged in".to_string());
                 }
@@ -123,9 +127,7 @@ pub async fn create_account(
 }
 
 #[tauri::command]
-pub async fn logout(
-    state: State<'_, Mutex<AuthData>>
-) -> Result<String, String> {
+pub async fn logout(state: State<'_, Mutex<AuthData>>) -> Result<String, String> {
     let mut auth_data = state.lock().await;
 
     auth_data.logged_in = false;
@@ -135,4 +137,3 @@ pub async fn logout(
 
     Ok("Logged out successfully".to_string())
 }
-

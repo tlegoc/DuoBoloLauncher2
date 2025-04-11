@@ -65,7 +65,9 @@ window.addEventListener("DOMContentLoaded", () => {
     playTest.addEventListener("click", async (e) => {
         e.preventDefault();
 
-        invoke("start_matchmaking");
+        const mmResult = await invoke("start_matchmaking");
+
+        console.log(mmResult);
 
         // console.log("Starting mm");
         //

@@ -6,13 +6,21 @@ mod matchmaking;
 use std::env;
 use tauri::Manager;
 use tokio::sync::Mutex;
+use std::sync::Arc;
 
+// TODO CHANGE TO STORE
 #[derive(Default, Debug)]
 pub struct AuthData {
     pub logged_in: bool,
     pub id_token: String,
     pub access_token: String,
     pub refresh_token: String,
+}
+
+#[derive(Default)]
+pub struct MatchmakingState
+{
+    pub matchmaking_in_progress: bool,
 }
 
 pub fn run() {
@@ -26,6 +34,10 @@ pub fn run() {
                 access_token: "".to_string(),
                 refresh_token: "".to_string(),
             }));
+
+            app.manage(Arc::new(Mutex::new(MatchmakingState {
+                matchmaking_in_progress: false,
+            })));
 
             Ok(())
         })
