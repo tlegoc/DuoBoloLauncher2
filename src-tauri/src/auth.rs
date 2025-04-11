@@ -1,24 +1,19 @@
 use crate::endpoints::{COGNITO_CLIENTID, REGION};
 
 use std::collections::HashMap;
-use tauri::State;
+use tauri::{AppHandle, Manager};
 
 use aws_config::meta::region::RegionProviderChain;
 use aws_config::BehaviorVersion;
 use aws_config::Region;
 
-use crate::AuthData;
+use crate::AppData;
 use aws_sdk_cognitoidentityprovider::error::ProvideErrorMetadata;
 use aws_sdk_cognitoidentityprovider::types::{AttributeType, AuthFlowType};
 use aws_sdk_cognitoidentityprovider::Client;
-use tokio::sync::Mutex;
 
 #[tauri::command]
-pub async fn login(
-    state: State<'_, Mutex<AuthData>>,
-    username: String,
-    password: String,
-) -> Result<String, String> {
+pub async fn login(app: AppHandle, username: String, password: String) -> Result<String, String> {
     let region_provider = RegionProviderChain::first_try(Region::new(REGION));
 
     let config = aws_config::defaults(BehaviorVersion::latest())
@@ -48,7 +43,8 @@ pub async fn login(
 
             if let Some(authentication_result) = response.authentication_result() {
                 if let Some(access_token) = authentication_result.access_token() {
-                    let mut auth_data = state.lock().await;
+                    let app_data = app.state::<AppData>();
+                    let mut auth_data = app_data.auth_data.lock().unwrap();
 
                     auth_data.logged_in = true;
                     auth_data.access_token = access_token.to_string();
@@ -113,9 +109,9 @@ pub async fn create_account(
     match response {
         Ok(response) => {
             if response.user_confirmed() {
-                return Ok("Account created.".to_string());
+                Ok("Account created.".to_string())
             } else {
-                return Err("Account created. Please check your email.".to_string());
+                Err("Account created. Please check your email.".to_string())
             }
         }
         Err(err) => Err(match err.code() {
@@ -127,13 +123,14 @@ pub async fn create_account(
 }
 
 #[tauri::command]
-pub async fn logout(state: State<'_, Mutex<AuthData>>) -> Result<String, String> {
-    let mut auth_data = state.lock().await;
+pub fn logout(app: AppHandle) -> Result<(), ()> {
+    let app_data = app.state::<AppData>();
+    let mut auth_data = app_data.auth_data.lock().unwrap();
 
     auth_data.logged_in = false;
     auth_data.access_token = "".to_string();
     auth_data.id_token = "".to_string();
     auth_data.refresh_token = "".to_string();
 
-    Ok("Logged out successfully".to_string())
+    Ok(())
 }

@@ -1,6 +1,6 @@
 const {invoke} = window.__TAURI__.core;
 // const WebSocket = window.__TAURI__.websocket;
-const { listen } = window.__TAURI__.event;
+const {listen} = window.__TAURI__.event;
 const {getCurrentWindow} = window.__TAURI__.window;
 import {PlayBtn} from "./playBtn.js";
 
@@ -11,7 +11,7 @@ let exitQuitBtn;
 let playBtn;
 let playBtnEl;
 let ipDisplayElDebug;
-let matchmakingListener;
+let unlistenToMatchmakingEvents;
 
 const appWindow = getCurrentWindow();
 
@@ -65,47 +65,32 @@ window.addEventListener("DOMContentLoaded", () => {
     playTest.addEventListener("click", async (e) => {
         e.preventDefault();
 
-        const mmResult = await invoke("start_matchmaking");
+        const isMatchmaking = await invoke("is_matchmaking");
 
-        console.log(mmResult);
+        try {
+            if (isMatchmaking) {
+                console.log("Stopping matchmaking");
 
-        // console.log("Starting mm");
-        //
-        // const url = await invoke("get_matchmaking_url");
-        //
-        // console.log("MM URL: ", url);
-        //
-        // ipDisplayElDebug.innerText = "Searching...";
-        //
-        // ws = await WebSocket.connect(url);
-        //
-        // ws.addListener((msg) => {
-        //     console.log("Received message: ", msg);
-        //
-        //     // if connection closed
-        //     try {
-        //         const data = JSON.parse(msg.data);
-        //
-        //         console.log(data);
-        //
-        //         if (data.status === "found") {
-        //             matchFound(data.ip, data.port);
-        //         }
-        //
-        //     } catch (e) {
-        //         console.log("Error while processing matchmaking message: ", e);
-        //     }
-        //
-        // });
+                await invoke("stop_matchmaking");
+
+                ipDisplayElDebug.innerText = "Search";
+            } else {
+                console.log("Starting matchmaking");
+                console.log("Started at", Date.now())
+
+                await invoke("start_matchmaking");
+
+                ipDisplayElDebug.innerText = "Searching";
+            }
+        } catch (e) {
+            console.log(e);
+        }
     });
 
-    matchmakingListener = listen('matchmaking_message', (event) => {
-        console.log(event);
+    unlistenToMatchmakingEvents = listen('matchmaking_event', (event) => {
+        console.log("MM Event received", event);
+        ipDisplayElDebug.innerText = event.toString();
     });
-});
-
-window.addEventListener("beforeunload", (event) => {
-    matchmakingListener();
 });
 
 function matchFound(ip, port) {

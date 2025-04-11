@@ -4,11 +4,11 @@ mod endpoints;
 mod matchmaking;
 
 use std::env;
-use tauri::Manager;
-use tokio::sync::Mutex;
 use std::sync::Arc;
+use std::sync::atomic::AtomicBool;
+use std::sync::Mutex;
+use tauri::Manager;
 
-// TODO CHANGE TO STORE
 #[derive(Default, Debug)]
 pub struct AuthData {
     pub logged_in: bool,
@@ -18,9 +18,9 @@ pub struct AuthData {
 }
 
 #[derive(Default)]
-pub struct MatchmakingState
-{
-    pub matchmaking_in_progress: bool,
+pub struct AppData {
+    pub auth_data: Arc<Mutex<AuthData>>,
+    pub continue_mm: AtomicBool
 }
 
 pub fn run() {
@@ -28,16 +28,15 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_websocket::init())
         .setup(|app| {
-            app.manage(Mutex::new(AuthData {
-                logged_in: false,
-                id_token: "".to_string(),
-                access_token: "".to_string(),
-                refresh_token: "".to_string(),
-            }));
-
-            app.manage(Arc::new(Mutex::new(MatchmakingState {
-                matchmaking_in_progress: false,
-            })));
+            app.manage(AppData {
+                auth_data: Arc::new(Mutex::new(AuthData {
+                    logged_in: false,
+                    id_token: "".to_string(),
+                    access_token: "".to_string(),
+                    refresh_token: "".to_string(),
+                })),
+                continue_mm: AtomicBool::new(false)
+            });
 
             Ok(())
         })
@@ -46,7 +45,9 @@ pub fn run() {
             auth::create_account,
             auth::logout,
             matchmaking::get_matchmaking_url,
-            matchmaking::start_matchmaking
+            matchmaking::start_matchmaking,
+            matchmaking::stop_matchmaking,
+            matchmaking::is_matchmaking
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
