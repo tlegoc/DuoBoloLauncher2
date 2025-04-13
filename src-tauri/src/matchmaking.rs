@@ -24,10 +24,15 @@ pub fn get_matchmaking_url(app: AppHandle) -> Result<String, String> {
 #[tauri::command]
 pub fn start_matchmaking(app: AppHandle) -> Result<(), String> {
     println!("Starting matchmaking!");
-    if is_matchmaking(app.clone()) {
+
+    let state = app.state::<AppData>();
+
+    if  state.continue_mm.load(Ordering::Relaxed) {
         println!("Already in matchmaking!");
         return Err("Matchmaking already started".to_string());
     }
+
+    state.continue_mm.store(true, Ordering::Relaxed);
 
     match get_matchmaking_url(app.clone()) {
         Ok(url) => {
@@ -73,11 +78,11 @@ pub fn is_matchmaking(app: AppHandle) -> bool {
 }
 
 pub async fn matchmaking_loop(app: AppHandle, url: String) {
-    let response = Client::default().get(url).upgrade().send().await;
-
     let state = app.state::<AppData>();
 
-    state.continue_mm.store(true, Ordering::Relaxed);
+    // state.continue_mm.store(true, Ordering::Relaxed);
+
+    let response = Client::default().get(url).upgrade().send().await;
 
     if let Err(_) = response.as_ref() {
         app.emit("matchmaking_event", "error").unwrap();
