@@ -61,7 +61,7 @@ window.addEventListener("DOMContentLoaded", () => {
         console.log("Play button clicked");
     });
 
-    let playTest = document.querySelector("#play-test");
+    let playTest = document.querySelector("#lol-mm-btn");
     playTest.addEventListener("click", async (e) => {
         e.preventDefault();
 

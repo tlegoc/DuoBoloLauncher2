@@ -72,8 +72,6 @@ pub fn is_matchmaking(app: AppHandle) -> bool {
 
     let result = state.continue_mm.load(Ordering::Relaxed);
 
-    println!("Getting current matchmaking state: {result}");
-
     return result;
 }
 
