@@ -12,6 +12,8 @@ let playBtn;
 let playBtnEl;
 let ipDisplayElDebug;
 let unlistenToMatchmakingEvents;
+let matchmakingBtn;
+let matchmakingBtnText;
 
 const appWindow = getCurrentWindow();
 
@@ -61,8 +63,9 @@ window.addEventListener("DOMContentLoaded", () => {
         console.log("Play button clicked");
     });
 
-    let playTest = document.querySelector("#lol-mm-btn");
-    playTest.addEventListener("click", async (e) => {
+    matchmakingBtn = document.querySelector("#lol-mm-btn");
+    matchmakingBtnText = document.querySelector("#lol-mm-text")
+    matchmakingBtn.addEventListener("click", async (e) => {
         e.preventDefault();
 
         const isMatchmaking = await invoke("is_matchmaking");
@@ -73,14 +76,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
                 await invoke("stop_matchmaking");
 
-                ipDisplayElDebug.innerText = "Search";
+                matchmakingBtnText.innerText = "Search";
             } else {
                 console.log("Starting matchmaking");
                 console.log("Started at", Date.now())
 
                 await invoke("start_matchmaking");
 
-                ipDisplayElDebug.innerText = "Searching";
+                matchmakingBtnText.innerText = "Searching";
             }
         } catch (e) {
             console.log(e);
@@ -89,7 +92,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     unlistenToMatchmakingEvents = listen('matchmaking_event', (event) => {
         console.log("MM Event received", event);
-        ipDisplayElDebug.innerText = event.toString();
     });
 });
 
