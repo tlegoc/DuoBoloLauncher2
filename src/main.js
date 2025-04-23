@@ -1,6 +1,5 @@
 const {invoke} = window.__TAURI__.core;
 // const WebSocket = window.__TAURI__.websocket;
-const {listen} = window.__TAURI__.event;
 const {getCurrentWindow} = window.__TAURI__.window;
 import {PlayBtn} from "./playBtn.js";
 
@@ -10,14 +9,13 @@ let exitLogoutBtn;
 let exitQuitBtn;
 let playBtn;
 let playBtnEl;
+let profileBtn;
 let ipDisplayElDebug;
-let unlistenToMatchmakingEvents;
-let matchmakingBtn;
-let matchmakingBtnText;
+
+let playContainer;
+let profileContainer;
 
 const appWindow = getCurrentWindow();
-
-let ws;
 
 window.addEventListener("DOMContentLoaded", () => {
     exitBtn = document.querySelector("#exit-btn");
@@ -25,6 +23,10 @@ window.addEventListener("DOMContentLoaded", () => {
     exitLogoutBtn = document.querySelector("#exit-disconnect-btn");
     exitQuitBtn = document.querySelector("#exit-quit-btn");
     ipDisplayElDebug = document.querySelector("#ip-display");
+    profileBtn = document.querySelector("#profile-btn");
+
+    playContainer = document.querySelector("#play-container");
+    profileContainer = document.querySelector("#profile-container");
 
     exitBtn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -56,50 +58,36 @@ window.addEventListener("DOMContentLoaded", () => {
 
     playBtnEl = document.querySelector(".lol-play-btn")
     playBtn = new PlayBtn(playBtnEl);
+    playBtn.disable(true);
 
     playBtnEl.addEventListener("click", async (e) => {
         e.preventDefault();
 
-        console.log("Play button clicked");
+        showContainer(Container.play);
     });
 
-    matchmakingBtn = document.querySelector("#lol-mm-btn");
-    matchmakingBtnText = document.querySelector("#lol-mm-text")
-    matchmakingBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
+    profileBtn.addEventListener("click", async (e) => {
+       e.preventDefault();
 
-        const isMatchmaking = await invoke("is_matchmaking");
-
-        try {
-            if (isMatchmaking) {
-                console.log("Stopping matchmaking");
-
-                await invoke("stop_matchmaking");
-
-                matchmakingBtnText.innerText = "Search";
-            } else {
-                console.log("Starting matchmaking");
-                console.log("Started at", Date.now())
-
-                await invoke("start_matchmaking");
-
-                matchmakingBtnText.innerText = "Searching";
-            }
-        } catch (e) {
-            console.log(e);
-        }
-    });
-
-    unlistenToMatchmakingEvents = listen('matchmaking_event', (event) => {
-        console.log("MM Event received", event);
+       showContainer(Container.profile);
     });
 });
 
-function matchFound(ip, port) {
-    console.log("Displaying ip");
-    ipDisplayElDebug.innerText = ip + ":" + port;
+const Container = {
+    play: "play-container",
+    profile: "profile-container"
 }
 
-function matchmakingCanceledByServer(data) {
-    console.log(data);
+const showContainer = (container) => {
+    if (container === Container.play)
+    {
+        playContainer.style.display = "flex";
+        profileContainer.style.display = "none";
+        playBtn.disable(true);
+    } else if (container === Container.profile)
+    {
+        profileContainer.style.display = "flex";
+        playContainer.style.display = "none";
+        playBtn.disable(false);
+    }
 }

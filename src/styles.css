@@ -355,6 +355,14 @@ html, body {
     background-image: url("assets/ui/matchmake_button/button-find-match-disabled.png");
 }
 
+.lol-mm-btn:disabled * {
+    opacity: 0;
+}
+
+.lol-mm-btn:disabled span {
+    opacity: 1;
+}
+
 .lol-mm-btn * {
     position: absolute;
     top: 0;
@@ -369,6 +377,10 @@ html, body {
 
 .lol-mm-btn > .lol-mm-btn-idle {
     opacity: 1;
+}
+
+.lol-mm-btn:disabled > .lol-mm-btn-idle {
+    opacity: 0;
 }
 
 .lol-mm-btn span {

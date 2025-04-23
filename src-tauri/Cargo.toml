@@ -29,3 +29,4 @@ aws-sdk-cognitoidentityprovider = "1.75.0"
 tokio = { version = "1.44.1", features = ["full"] }
 tauri-plugin-websocket = "2"
 futures-util = "0.3.31"
+tauri-plugin-shell = "2"

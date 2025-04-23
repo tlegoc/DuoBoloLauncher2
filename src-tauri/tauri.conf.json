@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "duobololauncher2",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "identifier": "com.duobololauncher2.app",
   "build": {
     "frontendDist": "../src"
@@ -15,7 +15,8 @@
         "height": 720,
         "decorations": false,
         "resizable": false,
-        "shadow": false
+        "shadow": false,
+        "contentProtected": true
       }
     ],
     "security": {
@@ -33,7 +34,10 @@
       "icons/icon.ico"
     ],
     "resources": {
-      "../game/": "game/"
-    }
+      "../game/assets/": "assets/"
+    },
+    "externalBin": [
+      "../game/DuoBoloEngine"
+    ]
   }
 }

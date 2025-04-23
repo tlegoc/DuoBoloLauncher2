@@ -13,6 +13,23 @@
     "core:window:allow-minimize",
     "core:window:allow-close",
     "websocket:default",
-    "websocket:default"
+    "websocket:default",
+    "shell:default",
+    "shell:allow-open",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "../game/DuoBoloEngine",
+          "args": [
+            "-i",
+            {
+              "validator": "\\S+"
+            }
+          ],
+          "sidecar": true
+        }
+      ]
+    }
   ]
 }

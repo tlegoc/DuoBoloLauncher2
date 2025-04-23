@@ -4,8 +4,8 @@ mod endpoints;
 mod matchmaking;
 
 use std::env;
-use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
+use std::sync::Arc;
 use std::sync::Mutex;
 use tauri::Manager;
 
@@ -19,12 +19,12 @@ pub struct AuthData {
 
 #[derive(Default)]
 pub struct AppData {
-    pub auth_data: Arc<Mutex<AuthData>>,
-    pub continue_mm: AtomicBool
+    pub auth_data: Arc<Mutex<AuthData>>
 }
 
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_websocket::init())
         .setup(|app| {
@@ -35,7 +35,6 @@ pub fn run() {
                     access_token: "".to_string(),
                     refresh_token: "".to_string(),
                 })),
-                continue_mm: AtomicBool::new(false)
             });
 
             Ok(())
@@ -44,10 +43,7 @@ pub fn run() {
             auth::login,
             auth::create_account,
             auth::logout,
-            matchmaking::get_matchmaking_url,
-            matchmaking::start_matchmaking,
-            matchmaking::stop_matchmaking,
-            matchmaking::is_matchmaking
+            matchmaking::get_matchmaking_url
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

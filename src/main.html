@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script type="module" src="/common.js" defer></script>
     <script type="module" src="/main.js" defer></script>
+    <script type="module" src="/matchmaking.js" defer></script>
     <title>DuoBoloGame</title>
 </head>
 <body>
@@ -31,9 +32,12 @@
         </button>
     </div>
 
+    <div class="lol-content-container" id="profile-container" style="display: none">
+        LOLILOL
+    </div>
+
     <!-- top bar -->
     <div data-tauri-drag-region style="display: flex; flex-direction: row-reverse; position: fixed; top: 0; left: 0; right: 0; height: 81px; border-bottom: 1px solid var(--color-Grey2);">
-
         <div class="lol-play-container">
             <video autoplay muted class="lol-play-icon" onended="document.querySelector('#lol-play-icon-idle').hidden = false; document.querySelector('#lol-play-icon-idle').play(); this.hidden = true;">
                 <source src="assets/ui/league-logo-intro.webm" type="video/webm">
@@ -61,7 +65,16 @@
                 <span>PLAY</span>
             </button>
         </div>
-        <div style="display: flex; width: 225px"></div>
+        <div style="display: flex; width: 225px">
+            <div style="height: 81px; width: 100%; display: flex; flex-direction: row; align-items: center">
+                <button id="profile-btn" class="lol-icon-btn" style="min-width: 70px; min-height: 70px; background-image: url('assets/ui/social_panel_level_ring.png')"></button>
+                <div style="height: 100%; width: 100%; display: flex; position: relative; flex-direction: column; align-items: flex-start">
+                    <span style="font-family: Beaufort, serif; font-size: 14pt; padding-top: 25px">Player name</span>
+                    <span style="font-family: Spiegel, sans-serif; font-size: 12pt; ">Niveau 10</span>
+                </div>
+            </div>
+
+        </div>
 
         <button class="lol-top-btn lol-shop-btn"></button>
         <button class="lol-top-btn lol-inventory-btn"></button>
