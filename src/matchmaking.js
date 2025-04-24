@@ -5,6 +5,7 @@ const {Command} = window.__TAURI__.shell;
 let matchmakingBtn;
 let matchmakingBtnText;
 let matchmakingWebsocket;
+let ingameoverlay;
 
 const MMState = {
     None: 'None', Searching: 'Searching', Found: 'Found', InGame: 'InGame'
@@ -14,7 +15,8 @@ let currentState = MMState.None;
 
 window.addEventListener("DOMContentLoaded", () => {
     matchmakingBtn = document.querySelector("#lol-mm-btn");
-    matchmakingBtnText = document.querySelector("#lol-mm-text")
+    matchmakingBtnText = document.querySelector("#lol-mm-text");
+    ingameoverlay = document.querySelector("#play-overlay");
     matchmakingBtn.addEventListener("click", async (e) => {
         e.preventDefault();
 
@@ -49,18 +51,22 @@ const setState = (newState) => {
         case MMState.None:
             matchmakingBtn.disabled = false;
             matchmakingBtnText.innerHTML = "FIND MATCH";
+            ingameoverlay.style.display = "none";
             break;
         case MMState.Searching:
             matchmakingBtn.disabled = false;
             matchmakingBtnText.innerHTML = "SEARCHING";
+            ingameoverlay.style.display = "none";
             break;
         case MMState.Found:
             matchmakingBtn.disabled = true;
             matchmakingBtnText.innerHTML = "MATCH FOUND";
+            ingameoverlay.style.display = "none";
             break;
         case MMState.InGame:
             matchmakingBtn.disabled = true;
             matchmakingBtnText.innerHTML = "IN GAME";
+            ingameoverlay.style.display = "flex";
             break;
     }
 }
@@ -68,8 +74,9 @@ const setState = (newState) => {
 const matchmakingEvent = async (msg) => {
     console.log(msg);
 
+    let data;
     try {
-        let data = JSON.parse(msg.data);
+        data = JSON.parse(msg.data);
     } catch (e) {
         console.log(e);
         return;
