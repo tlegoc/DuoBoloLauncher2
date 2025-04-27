@@ -74,6 +74,11 @@ const setState = (newState) => {
 const matchmakingEvent = async (msg) => {
     console.log(msg);
 
+    if (msg.type === "Close")
+    {
+        return;
+    }
+
     let data;
     try {
         data = JSON.parse(msg.data);
@@ -111,7 +116,7 @@ const serverStarted = async (ip) => {
     matchmakingWebsocket.disconnect();
     matchmakingWebsocket = null;
 
-    const command = Command.sidecar('../game/DuoBoloEngine', ["-i", ip]);
+    const command = Command.sidecar('../game/DuoBoloEngine', ["-i", ip, "-u", await invoke("get_username")]);
     await command.execute().then((result) => {
         console.log(result);
         setState(MMState.None);

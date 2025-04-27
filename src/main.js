@@ -11,19 +11,23 @@ let playBtn;
 let playBtnEl;
 let profileBtn;
 let ipDisplayElDebug;
+let userdisplay;
 
 let playContainer;
 let profileContainer;
 
 const appWindow = getCurrentWindow();
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
     exitBtn = document.querySelector("#exit-btn");
     exitContainer = document.querySelector("#exit-container");
     exitLogoutBtn = document.querySelector("#exit-disconnect-btn");
     exitQuitBtn = document.querySelector("#exit-quit-btn");
     ipDisplayElDebug = document.querySelector("#ip-display");
     profileBtn = document.querySelector("#profile-btn");
+    userdisplay = document.querySelector("#player-name");
+
+    userdisplay.innerHTML = await invoke("get_username");
 
     playContainer = document.querySelector("#play-container");
     profileContainer = document.querySelector("#profile-container");

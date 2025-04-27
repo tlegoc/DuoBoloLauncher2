@@ -56,6 +56,7 @@ pub async fn login(app: AppHandle, username: String, password: String) -> Result
                         .refresh_token()
                         .unwrap_or_default()
                         .to_string();
+                    auth_data.username = username.to_string();
 
                     return Ok("Successfully logged in".to_string());
                 }
@@ -131,6 +132,33 @@ pub fn logout(app: AppHandle) -> Result<(), ()> {
     auth_data.access_token = "".to_string();
     auth_data.id_token = "".to_string();
     auth_data.refresh_token = "".to_string();
+    auth_data.username = "".to_string();
 
     Ok(())
+}
+
+#[tauri::command]
+pub fn get_username(app: AppHandle) -> Result<String, ()> {
+    let app_data = app.state::<AppData>();
+    let auth_data = app_data.auth_data.lock().unwrap();
+
+    if auth_data.username == ""
+    {
+        return Err(());
+    }
+
+    Ok(auth_data.username.clone())
+}
+
+#[tauri::command]
+pub fn get_token(app: AppHandle) -> Result<String, ()> {
+    let app_data = app.state::<AppData>();
+    let auth_data = app_data.auth_data.lock().unwrap();
+
+    if auth_data.id_token == ""
+    {
+        return Err(());
+    }
+
+    Ok(auth_data.id_token.clone())
 }

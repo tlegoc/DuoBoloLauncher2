@@ -4,7 +4,6 @@ mod endpoints;
 mod matchmaking;
 
 use std::env;
-use std::sync::atomic::AtomicBool;
 use std::sync::Arc;
 use std::sync::Mutex;
 use tauri::Manager;
@@ -15,6 +14,7 @@ pub struct AuthData {
     pub id_token: String,
     pub access_token: String,
     pub refresh_token: String,
+    pub username: String
 }
 
 #[derive(Default)]
@@ -34,6 +34,7 @@ pub fn run() {
                     id_token: "".to_string(),
                     access_token: "".to_string(),
                     refresh_token: "".to_string(),
+                    username: "".to_string()
                 })),
             });
 
@@ -43,6 +44,9 @@ pub fn run() {
             auth::login,
             auth::create_account,
             auth::logout,
+            auth::get_username,
+            auth::get_token,
+            endpoints::get_api_url,
             matchmaking::get_matchmaking_url
         ])
         .run(tauri::generate_context!())

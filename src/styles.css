@@ -396,6 +396,10 @@ html, body {
     opacity: 1;
 }
 
+.lol-mm-btn:disabled > .lol-mm-btn-hover {
+    opacity: 0;
+}
+
 .lol-mm-btn:active > .lol-mm-btn-active {
     opacity: 1;
 }
