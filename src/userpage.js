@@ -1,7 +1,12 @@
 const {invoke} = window.__TAURI__.core;
 
+// import from script imported in html
+import {getAchievements} from "./achievements.js";
+
 let gameDisplay;
 let cubeDisplay;
+
+let achievementTemplate;
 
 window.addEventListener("DOMContentLoaded", async () => {
     gameDisplay = document.querySelector("#game-count");
@@ -27,11 +32,18 @@ window.addEventListener("DOMContentLoaded", async () => {
         }
 
         let userData = await response.json();
-        console.log("User data:", userData);
 
         // Example: Update the UI with some user info if needed
         gameDisplay.textContent = userData.matchCount;
         cubeDisplay.textContent = userData.totalCubesDropped;
+
+        userData.achievements.forEach(index => {
+            let achievement = getAchievements()[index];
+            if (achievement) {
+                let el = document.querySelector(`#${achievement.elementId}`);
+                el.setAttribute("data-owned", true);
+            }
+        })
     } catch (error) {
         console.error("Failed to fetch user data:", error);
     }

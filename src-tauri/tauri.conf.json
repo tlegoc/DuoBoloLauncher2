@@ -15,8 +15,7 @@
         "height": 720,
         "decorations": false,
         "resizable": false,
-        "shadow": false,
-        "contentProtected": true
+        "shadow": false
       }
     ],
     "security": {

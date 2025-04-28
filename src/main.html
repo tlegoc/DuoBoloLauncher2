@@ -8,6 +8,28 @@
     <script type="module" src="/main.js" defer></script>
     <script type="module" src="/matchmaking.js" defer></script>
     <script type="module" src="/userpage.js" defer></script>
+    <script type="module">
+        import {getAchievements} from "./achievements.js";
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const achievements = getAchievements();
+
+            let achievementsContainer = document.querySelector("#games-achievements");
+
+            achievements.forEach((a) => {
+                let el = `<h2>${a.name}</h2><p>${a.description}</p>\n`;
+
+                let div = document.createElement("div");
+                div.innerHTML = el;
+                div.classList.add("lol-achievement-display");
+                div.id = a.elementId;
+                // add data-owned attribute
+                div.setAttribute("data-owned", false);
+
+                achievementsContainer.appendChild(div);
+            });
+        });
+    </script>
     <title>DuoBoloGame</title>
 </head>
 <body>
@@ -38,23 +60,23 @@
     </div>
 
     <div class="lol-content-container" id="profile-container"
-         style="display: none; justify-content: flex-start; align-items: flex-start">
+         style="display: none; justify-content: flex-start; align-items: flex-start; flex-direction: row">
         <div id="games-container"
              style="background-image: url('assets/ui/npe-rewards-login-rewards-bg.jpg'); background-size: cover; width: 100%; display: flex; flex-direction: row">
             <!--            <img src="assets/ui/player_icons/7.jpg" style="border-radius: 50%; margin: 20px; height: 120px"/>-->
             <div style="display: flex; flex-direction: column; align-items: flex-start">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-left: 20px;">
                     <h1 style="font-family: Beaufort, serif;">Games</h1>
-                    <h1 id="game-count" style="font-family: Beaufort, serif;">0</h1>
+                    <h1 id="game-count" style="font-family: Beaufort, serif;">-</h1>
                 </div>
                 <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-left: 20px;">
                     <h1 style="font-family: Beaufort, serif;">Cubes dropped</h1>
-                    <h1 id="cube-count" style="font-family: Beaufort, serif;">0</h1>
+                    <h1 id="cube-count" style="font-family: Beaufort, serif;">-</h1>
                 </div>
             </div>
         </div>
-        <div id="games-history" style="background-color: aqua; width: 100%">
-
+        <div id="games-achievements" style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: flex-start; overflow-y: scroll">
+            <h1 style="font-family: Beaufort, serif; margin-left: 20px;">Achievements</h1>
         </div>
     </div>
 
