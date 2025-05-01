@@ -20,7 +20,7 @@
       "identifier": "shell:allow-execute",
       "allow": [
         {
-          "name": "../game/DuoBoloEngine",
+          "name": "DuoBoloClient",
           "args": [
             "-i",
             {

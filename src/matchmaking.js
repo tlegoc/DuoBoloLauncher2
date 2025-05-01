@@ -116,9 +116,9 @@ const serverStarted = async (ip) => {
     matchmakingWebsocket.disconnect();
     matchmakingWebsocket = null;
 
-    const command = Command.sidecar('../game/DuoBoloEngine', ["-i", ip, "-u", await invoke("get_username")]);
+    const command = Command.sidecar('DuoBoloClient', ["-i", ip, "-u", await invoke("get_username")]);
     await command.execute().then((result) => {
         console.log(result);
         setState(MMState.None);
-    })
+    });
 }
