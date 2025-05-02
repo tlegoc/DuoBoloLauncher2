@@ -1,7 +1,9 @@
-# Tauri + Vanilla
+# DuoBoloLauncher
 
-This template should help get you started developing with Tauri in vanilla HTML, CSS and Javascript.
+![image](https://github.com/user-attachments/assets/455fe1cc-456a-42a1-a292-2d2ec1e72a10)
 
-## Recommended IDE Setup
+![image](https://github.com/user-attachments/assets/488cd332-3291-4562-912c-78b13eabd538)
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+![image](https://github.com/user-attachments/assets/309736f5-cc71-4948-b676-f509cf876c2e)
+
+![image](https://github.com/user-attachments/assets/9105c2e0-4556-4fca-9e81-58091b256c19)
