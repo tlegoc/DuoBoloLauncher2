@@ -1,5 +1,7 @@
 # DuoBoloLauncher
 
+# INSTALLATION : https://github.com/tlegoc/DuoBoloLauncher2/releases
+
 ![image](https://github.com/user-attachments/assets/455fe1cc-456a-42a1-a292-2d2ec1e72a10)
 
 ![image](https://github.com/user-attachments/assets/488cd332-3291-4562-912c-78b13eabd538)
